@@ -7,7 +7,7 @@ import json
 app = Flask(__name__)
 
 
-@app.route('/api/v2/registration/', methods=['POST'])
+@app.route('', methods=['POST'])
 def registration():
     try:
       pass
