@@ -82,10 +82,19 @@ class WrapperDB:
 
 
 class Destributor:
+    """
+    Serves as a layer between the 
+    server and the database
+    """
     def __init__(self, data):
         self.data = data
 
     def get_users(self):
+        """
+        Displaying the nearest neighbors to the 
+        given coordinates of longitude and 
+        latitude within a radius of N kilometers
+        """
         try:
             latitude = self.data['latitude']
             longitude = self.data['longitude'] 
@@ -114,6 +123,9 @@ class Destributor:
             new_data['status'] = True
 
     def add_user(self):
+        """
+        Allows you to add a new user
+        """
         try:
             latitude = self.data['latitude']
             longitude = self.data['longitude']
@@ -125,6 +137,9 @@ class Destributor:
         return {"status": False, "info": "error, user is not logged"}
     
     def delete_user(self):
+        """
+        Allows you to delete user
+        """
         try:
             user_id = self.data['user_id']
         except (AttributeError, TypeError, ValueError, KeyError):
@@ -135,6 +150,9 @@ class Destributor:
         return {"status": False, "info": "error, user not deleted"}
     
     def update_user(self):
+        """
+        Allows you to update user
+        """
         try:
             user_id = self.data['user_id']
             latitude = self.data['latitude']

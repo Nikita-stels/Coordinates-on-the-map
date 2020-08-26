@@ -4,6 +4,9 @@ from scripts.logic.utilities import ConnectDB
 
 
 class CreateDB():
+    """
+    The class is needed to create a database nugget
+    """
     def __init__(self):
         self.connect_db = ConnectDB()
 
