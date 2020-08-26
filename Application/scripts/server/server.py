@@ -12,3 +12,18 @@ def get_users():
   status = Destributor(data).get_users()
   print(status)
   return status
+
+
+@app.route('/api/v0.1/add_user', methods=['POST'])
+def add_user():
+  data = request.json
+  status = Destributor(data).add_user()
+  print(status)
+  return status
+
+@app.route('/api/v0.1/delete_user', methods=['POST'])
+def delete_user():
+  data = request.json
+  status = Destributor(data).delete_user()
+  print(status)
+  return status

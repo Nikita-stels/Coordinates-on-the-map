@@ -10,4 +10,25 @@ def get_users(latitude, longitude, radius):
     status = requests.post(url, json=data)
     return status.json()
 
-print(get_users(latitude, longitude, radius))
+# print(get_users(latitude, longitude, radius))
+
+
+def add_user(latitude, longitude):
+    url = r'http://127.0.0.1:8888//api/v0.1/add_user'
+    data = {'latitude': latitude, 'longitude': longitude}
+    status = requests.post(url, json=data)
+    return status.json()
+
+latitude = 47.704578
+longitude = 44.557112 
+# print(add_user(latitude, longitude))
+
+def delete_user(user_id):
+    url = r'http://127.0.0.1:8888//api/v0.1/delete_user'
+    data = {'user_id': user_id}
+    status = requests.post(url, json=data)
+    return status.json()
+
+user_id = 7
+# print(delete_user(user_id))
+

@@ -34,18 +34,38 @@ class WrapperDB:
         radius - in kilometers
         """
         request = f"""
-                Select id, Lat, Lon
-                From coordinate
-                Where acos(sin(radians({center_lat}))*sin(radians(Lat)) + cos(radians({center_lat}))*cos(radians(Lat))*cos(radians(Lon)-radians({center_lon}))) * 6371 < {radius}
+                SELECT id, Lat, Lon
+                FROM coordinate
+                WHERE acos(sin(radians({center_lat}))*sin(radians(Lat)) + cos(radians({center_lat}))*cos(radians(Lat))*cos(radians(Lon)-radians({center_lon}))) * 6371 < {radius}
                 """
         self.connect_db.cursor.execute(request)
         return self.connect_db.cursor.fetchall()
 
+    def add_user(self, latitude, longitude):
+        """ 
+        Writes coordinates to the database
+        """
+        request = f"INSERT INTO coordinate (Lat, Lon) VALUES({latitude}, {longitude})"
+        self.connect_db.cursor.execute(request)
+        self.connect_db.conn.commit()
+        if self.connect_db.cursor.statusmessage == "INSERT 0 1":
+            return True
+        return False
+
+    def delete_user(self, user_id):
+        """ 
+        Removing a user by his ID
+        """
+        request = f"DELETE FROM coordinate WHERE Id = '{user_id}'"
+        self.connect_db.cursor.execute(request)
+        self.connect_db.conn.commit()
+        if self.connect_db.cursor.statusmessage == "DELETE 1":
+            return True
+        return False
+        
+
     def __str__(self):
         return __class__.__name__
-
-# a = WrapperDB().get_users_coordinate(48.704578, 44.507112, 5)
-
 
 
 class Destributor:
@@ -74,11 +94,30 @@ class Destributor:
             new_data['users'] = []
             for coor in users:
                 new_data['users'].append([float(coor[1]), float(coor[2]), coor[0]])
-            # if new_data['users']:
-            #     new_data['status'] = True
             return new_data
         except TypeError:
             return {"status": False, "info": "json collection error"}
         else:
             new_data['status'] = True
 
+    def add_user(self):
+        try:
+            latitude = self.data['latitude']
+            longitude = self.data['longitude']
+        except (AttributeError, TypeError, ValueError, KeyError):
+            return {"status": False, "info": "invalid json"}
+        status = WrapperDB().add_user(latitude, longitude)
+        if status:
+            return {"status": True, "info": "user added successfully"}
+        return {"status": False, "info": "error, user is not logged"}
+    
+    def delete_user(self):
+        try:
+            user_id = self.data['user_id']
+        except (AttributeError, TypeError, ValueError, KeyError):
+            return {"status": False, "info": "invalid json"}
+        status = WrapperDB().delete_user(user_id) 
+        if status:
+            return {"status": True, "info": "user deleted successfully"}
+        return {"status": False, "info": "error, user not deleted"}
+        
