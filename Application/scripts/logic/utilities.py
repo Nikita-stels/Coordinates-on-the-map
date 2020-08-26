@@ -10,7 +10,7 @@ class ConnectDB():
         self.cursor = self.conn.cursor()
 
     def config_app(self):
-        path = os.getcwd() + "\Application\config.json" ######### !!!\config.json
+        path = os.getcwd() + "/Application/config.json"
         with open(path) as config:
             json_str = config.read()
             return json.loads(json_str)
@@ -26,9 +26,9 @@ class WrapperDB:
     def __init__(self):
         self.connect_db = ConnectDB()
 
-    def get_users_coordinate(self, center_lat, center_lon, radius) -> list:
+    def get_users_coordinate(self, center_lat, center_lon, radius):
         """ 
-        returns a sheet with coordinates 
+        Returns a sheet with coordinates 
         included in the desired radius
         center_lat, center_lon - latitude and longitude in radians
         radius - in kilometers
@@ -53,23 +53,32 @@ class Destributor:
         self.data = data
 
     def get_users(self):
-        latitude = self.data['latitude']
-        longitude = self.data['longitude'] 
-        radius = self.data['radius']
+        try:
+            latitude = self.data['latitude']
+            longitude = self.data['longitude'] 
+            radius = self.data['radius']
+        except (AttributeError, TypeError, ValueError, KeyError):
+            return {"status": False, "info": "invalid json"}
         coordinate_users = WrapperDB().get_users_coordinate(latitude, longitude, radius)
         users_json = self.parsing_users(coordinate_users)
         return users_json
 
     def parsing_users(self, users):
-        """ Parsing data in dict(dict()...) """
+        """ Parsing data in 
+            {'status': True, 
+            'users':[lat, lon, id],[...]...}
+            if None
+        """
         try:
             new_data = dict()
             new_data['users'] = []
             for coor in users:
                 new_data['users'].append([float(coor[1]), float(coor[2]), coor[0]])
-            if new_data['users']:
-                new_data['status'] = True
+            # if new_data['users']:
+            #     new_data['status'] = True
             return new_data
         except TypeError:
-            return None
+            return {"status": False, "info": "json collection error"}
+        else:
+            new_data['status'] = True
 

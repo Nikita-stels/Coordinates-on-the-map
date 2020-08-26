@@ -9,10 +9,9 @@ def main():
     app.run(*conf_server())
 
 
-def conf_server() -> tuple:
+def conf_server():
     """ returns tuple(host, server) from the file: config.txt """
-    # print(sys.path)
-    path = os.getcwd() + "\Application\config.json"
+    path = os.getcwd() + "/Application/config.json"
     with open(path) as config:
         json_str = config.read()
         json_str = json.loads(json_str)
@@ -23,4 +22,4 @@ def conf_server() -> tuple:
 
 
 if __name__ == "__main__":
-        main()
+    main()

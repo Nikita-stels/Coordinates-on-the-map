@@ -35,10 +35,10 @@ class CreateDB():
         return self.connect_db.cursor.statusmessage
 
 
-# a = CreateDB()
-# a.create_tabl()
-# a.create_index()
-# a.insert_test_coordinate()
+a = CreateDB()
+print(a.create_tabl())
+print(a.create_index())
+print(a.insert_test_coordinate())
 
 
 # centr_test = (48.704578, 44.507112)

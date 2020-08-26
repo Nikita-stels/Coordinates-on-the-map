@@ -8,10 +8,7 @@ app = Flask(__name__)
 
 @app.route('/api/v0.1/get_users', methods=['POST'])
 def get_users():
-  try:
-    data = request.json
-  except KeyError:
-      return {"status": False, "info": "incorrect data"}
+  data = request.json
   status = Destributor(data).get_users()
   print(status)
   return status

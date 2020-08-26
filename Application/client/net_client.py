@@ -1,6 +1,6 @@
 import requests
 
-latitude = 48.704578 
+latitude = 48.704578
 longitude = 44.507112 
 radius = 5
 
