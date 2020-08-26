@@ -12,5 +12,6 @@ def get_users():
     data = request.json
   except KeyError:
       return {"status": False, "info": "incorrect data"}
-  status = Destributor().registration()
-  return {"status": status}
+  status = Destributor(data).get_users()
+  print(status)
+  return status

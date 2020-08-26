@@ -49,5 +49,27 @@ class WrapperDB:
 
 
 class Destributor:
-    def __init__(self):
-        pass
+    def __init__(self, data):
+        self.data = data
+
+    def get_users(self):
+        latitude = self.data['latitude']
+        longitude = self.data['longitude'] 
+        radius = self.data['radius']
+        coordinate_users = WrapperDB().get_users_coordinate(latitude, longitude, radius)
+        users_json = self.parsing_users(coordinate_users)
+        return users_json
+
+    def parsing_users(self, users):
+        """ Parsing data in dict(dict()...) """
+        try:
+            new_data = dict()
+            new_data['users'] = []
+            for coor in users:
+                new_data['users'].append([float(coor[1]), float(coor[2]), coor[0]])
+            if new_data['users']:
+                new_data['status'] = True
+            return new_data
+        except TypeError:
+            return None
+
