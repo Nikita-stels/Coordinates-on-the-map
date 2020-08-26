@@ -1,5 +1,6 @@
 # Coordinates-on-the-map
-API service allows to query the nearest neighbors to given coordinates (x, y) within a radius of M kilometers.
+REST API сервис для поиска ближайших соседей на 2d плоскости. Основная функция - сервис должен позволить запросить K ближайших соседей к данным координатам (x, y) в радиусе M километров.
+
 
 ## Для начала работы с api необходимо:
 
@@ -23,6 +24,11 @@ API service allows to query the nearest neighbors to given coordinates (x, y) wi
 		$ make run
 	После этого будет запущен сервер и api готов к работе.
 
+## Работать с API можно 
+1) через post запросы 
+2) с помощью интерфейса
+
+## 1)
 ## Начало работы с api
 Примеры работы:
 
@@ -68,3 +74,6 @@ radius - в километрах
         status = requests.post(url, json=data)
         return status.json()
 
+## 2)
+
+Интерфейс находится в разработке
