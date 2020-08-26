@@ -5,13 +5,14 @@ import os
 
 
 def main():
+    app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
     app.run(*conf_server())
 
 
 def conf_server() -> tuple:
     """ returns tuple(host, server) from the file: config.txt """
-    print(sys.path)
-    path = os.getcwd() + "/Application-VT/config.json"
+    # print(sys.path)
+    path = os.getcwd() + "\Application\config.json"
     with open(path) as config:
         json_str = config.read()
         json_str = json.loads(json_str)

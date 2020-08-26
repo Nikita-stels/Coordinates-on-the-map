@@ -1,18 +1,16 @@
 from flask import Flask, request
 from scripts.logic.utilities import Destributor
-from scripts.logic.utilities import WrapperDB
 import json
 
 
 app = Flask(__name__)
 
 
-@app.route('', methods=['POST'])
-def registration():
-    try:
-      pass
-    except KeyError:
-        return {"status": False, "info": "incorrect data"}
-    user = Destributor()
-    status = user.registration()
-    return {"status": status}
+@app.route('/api/v0.1/get_users', methods=['POST'])
+def get_users():
+  try:
+    data = request.json
+  except KeyError:
+      return {"status": False, "info": "incorrect data"}
+  status = Destributor().registration()
+  return {"status": status}

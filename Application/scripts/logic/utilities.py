@@ -1,8 +1,6 @@
 import os
 import json
 import psycopg2
-# from bson.objectid import ObjectId
-# OS = sys.platform
 
 
 class ConnectDB():
@@ -28,16 +26,26 @@ class WrapperDB:
     def __init__(self):
         self.connect_db = ConnectDB()
 
-    def get_all_coordinate(self) -> list:
-        """  """
-        request = """ SELECT * FROM coordinate """
+    def get_users_coordinate(self, center_lat, center_lon, radius) -> list:
+        """ 
+        returns a sheet with coordinates 
+        included in the desired radius
+        center_lat, center_lon - latitude and longitude in radians
+        radius - in kilometers
+        """
+        request = f"""
+                Select id, Lat, Lon
+                From coordinate
+                Where acos(sin(radians({center_lat}))*sin(radians(Lat)) + cos(radians({center_lat}))*cos(radians(Lat))*cos(radians(Lon)-radians({center_lon}))) * 6371 < {radius}
+                """
         self.connect_db.cursor.execute(request)
         return self.connect_db.cursor.fetchall()
-    
+
     def __str__(self):
         return __class__.__name__
-    
-    
+
+# a = WrapperDB().get_users_coordinate(48.704578, 44.507112, 5)
+
 
 
 class Destributor:
