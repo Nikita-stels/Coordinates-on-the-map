@@ -62,7 +62,20 @@ class WrapperDB:
         if self.connect_db.cursor.statusmessage == "DELETE 1":
             return True
         return False
-        
+    
+    def update_user(self, latitude, longitude, user_id):
+        """
+        """
+        request = f"""UPDATE coordinate 
+                        SET Lat = '{latitude}',
+                            Lon = '{longitude}'
+                        WHERE(Id = '{user_id}')"""
+        self.connect_db.cursor.execute(request)
+        self.connect_db.conn.commit()
+        print(self.connect_db.cursor.statusmessage)
+        if self.connect_db.cursor.statusmessage == "UPDATE 1":
+            return True
+        return False
 
     def __str__(self):
         return __class__.__name__
@@ -120,4 +133,15 @@ class Destributor:
         if status:
             return {"status": True, "info": "user deleted successfully"}
         return {"status": False, "info": "error, user not deleted"}
-        
+    
+    def update_user(self):
+        try:
+            user_id = self.data['user_id']
+            latitude = self.data['latitude']
+            longitude = self.data['longitude']
+        except (AttributeError, TypeError, ValueError, KeyError):
+            return {"status": False, "info": "invalid json"}
+        status = WrapperDB().update_user(latitude, longitude, user_id)
+        if status:
+            return {"status": True, "info": "data changed successfully"}
+        return {"status": False, "info": "error, data not changed"}

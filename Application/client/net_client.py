@@ -29,6 +29,19 @@ def delete_user(user_id):
     status = requests.post(url, json=data)
     return status.json()
 
-user_id = 7
+user_id = 8
 # print(delete_user(user_id))
 
+
+
+def update_user(user_id, latitude, longitude):
+    url = r'http://127.0.0.1:8888//api/v0.1/update_user'
+    data = {'user_id': user_id,
+            'latitude': latitude, 
+            'longitude': longitude}
+    status = requests.post(url, json=data)
+    return status.json()
+
+latitude = 51.704578
+longitude = 50.557112 
+print(update_user(user_id, latitude, longitude))
