@@ -35,16 +35,10 @@ class CreateDB():
         return self.connect_db.cursor.statusmessage
 
 
-a = CreateDB()
-print(a.create_tabl())
-print(a.create_index())
-print(a.insert_test_coordinate())
+def create_db():
+    db = CreateDB()
+    db.create_tabl()
+    db.create_index()
+    db.insert_test_coordinate()
 
-
-# centr_test = (48.704578, 44.507112)
-# in_circle = """
-#                 Select id, Lat, Lon,
-#                     acos(sin(radians(48.704578))*sin(radians(Lat)) + cos(radians(48.704578))*cos(radians(Lat))*cos(radians(Lon)-radians(44.507112))) * 6371 As D
-#                 From coordinate
-#                 Where acos(sin(radians(48.704578))*sin(radians(Lat)) + cos(radians(48.704578))*cos(radians(Lat))*cos(radians(Lon)-radians(44.507112))) * 6371 < 5;
-#                 """
+create_db()
