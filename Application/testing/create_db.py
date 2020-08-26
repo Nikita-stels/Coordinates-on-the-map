@@ -40,5 +40,6 @@ def create_db():
     db.create_tabl()
     db.create_index()
     db.insert_test_coordinate()
+    print("ok")
 
 create_db()
