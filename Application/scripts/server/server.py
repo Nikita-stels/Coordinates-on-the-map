@@ -41,11 +41,14 @@ def update_user():
 
 @app.route('/api/v2/web_get_users/', methods=['GET', 'POST'])
 def web_get_users():
-    print(request.json)
-    return render_template('index.html')
+  print(request.json)
+  return render_template('index.html')
 
 
 @app.route('/api/v2/web_get_map/', methods=['POST'])
 def web_get_map():
-    print(request.json)
-    return {"asd":True}
+  data = request.json
+  print(data)
+  status = Destributor(data).web_get_map()
+  print(status)
+  return status._repr_html_()

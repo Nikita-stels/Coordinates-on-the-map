@@ -1,6 +1,28 @@
 import os
 import json
 import psycopg2
+import requests
+import folium
+from folium.plugins import MarkerCluster
+
+
+class Atlas:
+    def __init__(self, latitude, longitude):
+        self.latitude = latitude
+        self.longitude = longitude
+        self.map = folium.Map(location=[latitude,longitude], zoom_start = 8)
+        self.marker_cluster = MarkerCluster().add_to(self.map)
+        print(self.marker_cluster)
+    
+    def generation_map(self, coordinates):
+        for point in coordinates['users']:
+            lat, lon, info_id = point
+            print(point)
+
+            # folium.Marker(location=coordinates, icon=folium.Icon(color = 'green')).add_to(map)
+            folium.Marker(location=[lat,lon], popup=info_id, icon=folium.Icon(color = 'gray')).add_to(self.marker_cluster)
+        # self.map.save("map1.html")
+        return self.map
 
 
 class ConnectDB():
@@ -151,3 +173,17 @@ class Destributor:
         if status:
             return {"status": True, "info": "data changed successfully"}
         return {"status": False, "info": "error, data not changed"}
+
+    def web_get_map(self):
+        """ """
+        try:
+            radius = float(self.data['radius'])
+            latitude = float(self.data['latitude'])
+            longitude = float(self.data['longitude'])
+        except (AttributeError, TypeError, ValueError, KeyError):
+            return {"status": False, "info": "invalid json"}
+        coordinate_users = WrapperDB().get_users_coordinate(latitude, longitude, radius)
+        users_json = self.parsing_users(coordinate_users)
+        maps = Atlas(latitude, longitude).generation_map(users_json)
+        return maps
+
