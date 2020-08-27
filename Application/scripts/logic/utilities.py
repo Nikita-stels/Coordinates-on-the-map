@@ -22,7 +22,6 @@ class ConnectDB():
 
 class WrapperDB:
     """Class for requests DB."""
-    #self.connect_db.conn.commit()
     def __init__(self):
         self.connect_db = ConnectDB()
 
@@ -33,11 +32,10 @@ class WrapperDB:
         radius - in kilometers.
 
         """
-        request = f"""
-                SELECT id, Lat, Lon
-                FROM coordinate
-                WHERE acos(sin(radians({center_lat}))*sin(radians(Lat)) + cos(radians({center_lat}))*cos(radians(Lat))*cos(radians(Lon)-radians({center_lon}))) * 6371 < {radius}
-                """
+        request = f"""SELECT id, Lat, Lon
+                    FROM coordinate
+                    WHERE acos(sin(radians({center_lat}))*sin(radians(Lat)) + cos(radians({center_lat}))*cos(radians(Lat))*cos(radians(Lon)-radians({center_lon}))) * 6371 < {radius}
+                    """
         self.connect_db.cursor.execute(request)
         return self.connect_db.cursor.fetchall()
 
@@ -68,7 +66,6 @@ class WrapperDB:
                         WHERE(Id = '{user_id}')"""
         self.connect_db.cursor.execute(request)
         self.connect_db.conn.commit()
-        print(self.connect_db.cursor.statusmessage)
         if self.connect_db.cursor.statusmessage == "UPDATE 1":
             return True
         return False
@@ -118,7 +115,6 @@ class Destributor:
             return {"status": False, "info": "json collection error"}
         else:
             new_data['status'] = True
-            new_data['info'] = "сoordinates found"
 
     def add_user(self):
         """Allows you to add a new user."""

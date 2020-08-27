@@ -8,9 +8,9 @@ from scripts.server.server import app
 
 class TestApi(unittest.TestCase):
     def test_get_user(self):
-        latitude = 55.753960
-        longitude = 37.620393
-        radius = 10
+        latitude = 48.704578
+        longitude = 44.507112 
+        radius = 50
         sent = {"latitude": latitude,
                 "longitude": longitude,
                 "radius": radius}
@@ -18,7 +18,7 @@ class TestApi(unittest.TestCase):
         with app.test_client() as client:
             relult = client.post(url, json=sent)
             self.assertIsInstance(relult.json['users'], list)
-            
+
     # def test_add_user1(self):
     #     """Correct data submitted."""
     #     latitude = 55.753960 

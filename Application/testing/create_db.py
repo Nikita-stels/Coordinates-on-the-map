@@ -25,7 +25,11 @@ class CreateDB():
 
     def create_index(self):
         """Create table coordinate."""
-        request = "CREATE INDEX index_name ON coordinate (Lat, Lon)"
+        request = "CREATE INDEX indeLat ON coordinate (Lat)"
+        self.connect_db.cursor.execute(request)
+        self.connect_db.conn.commit()
+
+        request = "CREATE INDEX indeLat ON coordinate (Lon)"
         self.connect_db.cursor.execute(request)
         self.connect_db.conn.commit()
         return self.connect_db.cursor.statusmessage
@@ -33,8 +37,8 @@ class CreateDB():
     def insert_test_coordinate(self):
         """Insert test coordinate."""
         request = """ INSERT INTO coordinate (Lat, Lon) VALUES(48.685444, 44.474254), 
-                                                     (48.716087, 44.482757), 
-                                                     (48.746087, 44.697221); """
+                                                                (48.716087, 44.482757), 
+                                                                (48.746087, 44.697221); """
         self.connect_db.cursor.execute(request)
         self.connect_db.conn.commit()
         return self.connect_db.cursor.statusmessage
@@ -46,9 +50,9 @@ class CreateDB():
         self.connect_db.conn.commit()
         return self.connect_db.cursor.statusmessage
 
-    def generate_big_data(self):
+    def generate_big_data(self, quantity):
         """Filling the database with random coordinates."""
-        for _ in range(1000000):
+        for _ in range(quantity):
             latitude = round(random.random() * 89, 6)
             longitude = round(random.random() * 179, 6)
             request = f""" INSERT INTO coordinate (Lat, Lon) VALUES({latitude}, {longitude})"""
@@ -75,7 +79,8 @@ def create_big_data():
     db = CreateDB()
     db.drop_table()
     db.create_tabl()
+    
+    db.generate_big_data(100000)
     db.create_index()
-    db.generate_big_data()
 
 create_big_data()

@@ -2,7 +2,7 @@ import requests
 
 latitude = 48.704578
 longitude = 44.507112 
-radius = 5
+radius = 50
 
 def get_users(latitude, longitude, radius):
     url = r'http://127.0.0.1:8888//api/v0.1/get_users'
@@ -10,7 +10,7 @@ def get_users(latitude, longitude, radius):
     status = requests.post(url, json=data)
     return status.json()
 
-# print(get_users(latitude, longitude, radius))
+print(get_users(latitude, longitude, radius))
 
 
 def add_user(latitude, longitude):
@@ -44,4 +44,4 @@ def update_user(user_id, latitude, longitude):
 
 latitude = 51.704578
 longitude = 50.557112 
-print(update_user(user_id, latitude, longitude))
+# print(update_user(user_id, latitude, longitude))
