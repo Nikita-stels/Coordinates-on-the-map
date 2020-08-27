@@ -17,7 +17,9 @@ elem.onclick = function() {
     request.onload = () => console.log(request.response)
     request.onload = function () {
         if (request.status == "200") {
-            console.log(request.json)
+            console.log(request)
+            document.write(request.responseText);
+            // РАЗОБРАТЬСЯ СО СТАТУС КОДОМ И ВЫВОДОМ HTML
     }
    
 }

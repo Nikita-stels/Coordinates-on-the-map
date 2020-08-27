@@ -48,7 +48,5 @@ def web_get_users():
 @app.route('/api/v2/web_get_map/', methods=['POST'])
 def web_get_map():
   data = request.json
-  print(data)
   status = Destributor(data).web_get_map()
-  print(status)
   return status._repr_html_()

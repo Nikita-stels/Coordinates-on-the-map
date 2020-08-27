@@ -10,7 +10,7 @@ class Atlas:
     def __init__(self, latitude, longitude):
         self.latitude = latitude
         self.longitude = longitude
-        self.map = folium.Map(location=[latitude,longitude], zoom_start = 8)
+        self.map = folium.Map(location=[latitude,longitude], zoom_start = 12)
         self.marker_cluster = MarkerCluster().add_to(self.map)
         print(self.marker_cluster)
     
