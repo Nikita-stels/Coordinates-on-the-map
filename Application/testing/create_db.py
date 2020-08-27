@@ -1,4 +1,5 @@
 import sys
+import random
 sys.path[0] = sys.path[0][:-8]
 from scripts.logic.utilities import ConnectDB
 
@@ -39,11 +40,23 @@ class CreateDB():
         return self.connect_db.cursor.statusmessage
     
     def drop_table(self):
+        """Removing all records in a table."""
         request = """DROP TABLE IF EXISTS coordinate"""
         self.connect_db.cursor.execute(request)
         self.connect_db.conn.commit()
         return self.connect_db.cursor.statusmessage
 
+    def generate_big_data(self):
+        """Filling the database with random coordinates."""
+        for _ in range(1000000):
+            latitude = round(random.random() * 89, 6)
+            longitude = round(random.random() * 179, 6)
+            request = f""" INSERT INTO coordinate (Lat, Lon) VALUES({latitude}, {longitude})"""
+            self.connect_db.cursor.execute(request)
+            self.connect_db.conn.commit()
+        return self.connect_db.cursor.statusmessage
+        
+        
 
 def create_db():
     db = CreateDB()
@@ -56,4 +69,13 @@ def create_db():
     else:
         print("Error")
 
-create_db()
+# create_db()
+
+def create_big_data():
+    db = CreateDB()
+    db.drop_table()
+    db.create_tabl()
+    db.create_index()
+    db.generate_big_data()
+
+create_big_data()

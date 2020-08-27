@@ -118,6 +118,7 @@ class Destributor:
             return {"status": False, "info": "json collection error"}
         else:
             new_data['status'] = True
+            new_data['info'] = "сoordinates found"
 
     def add_user(self):
         """Allows you to add a new user."""
