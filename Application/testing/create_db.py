@@ -36,7 +36,7 @@ class CreateDB():
 
     def insert_test_coordinate(self):
         """Insert test coordinate."""
-        request = """ INSERT INTO coordinate (Lat, Lon) VALUES(48.685444, 44.474254), 
+        request = """INSERT INTO coordinate (Lat, Lon) VALUES(48.685444, 44.474254), 
                                                                 (48.716087, 44.482757), 
                                                                 (48.746087, 44.697221); """
         self.connect_db.cursor.execute(request)
@@ -55,7 +55,7 @@ class CreateDB():
         for _ in range(quantity):
             latitude = round(random.random() * 89, 6)
             longitude = round(random.random() * 179, 6)
-            request = f""" INSERT INTO coordinate (Lat, Lon) VALUES({latitude}, {longitude})"""
+            request = f"""INSERT INTO coordinate (Lat, Lon) VALUES({latitude}, {longitude})"""
             self.connect_db.cursor.execute(request)
             self.connect_db.conn.commit()
         return self.connect_db.cursor.statusmessage
