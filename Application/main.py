@@ -12,7 +12,7 @@ def main():
 def conf_server():
     """Returns tuple(host, server) 
     from the file: config.txt.
-    
+
     """
     path = os.getcwd() + "/Application/config.json"
     with open(path) as config:

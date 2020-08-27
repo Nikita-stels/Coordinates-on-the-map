@@ -1,10 +1,12 @@
 from flask import Flask, request
+from flask import render_template
+from flask_cors import CORS
 from scripts.logic.utilities import Destributor
 import json
 
 
 app = Flask(__name__)
-
+CORS(app)
 
 @app.route('/api/v0.1/get_users', methods=['POST'])
 def get_users():
@@ -37,4 +39,13 @@ def update_user():
   print(status)
   return status
 
+@app.route('/api/v2/web_get_users/', methods=['GET', 'POST'])
+def web_get_users():
+    print(request.json)
+    return render_template('index.html')
 
+
+@app.route('/api/v2/web_get_map/', methods=['POST'])
+def web_get_map():
+    print(request.json)
+    return {"asd":True}

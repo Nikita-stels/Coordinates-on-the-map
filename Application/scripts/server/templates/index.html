@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>On the map</title>
+  <link rel="icon" type="image/png" href="/static/icon.png"> 
+  <link rel="stylesheet" type="text/css" href="{{ url_for( 'static', filename='style.css', v=1)}}">
+  <!-- <script src="send_post.js"></script> -->
+  <!-- <script src="{{ url_for('static', filename='js/send_post.js') }}"></script> -->
+</head>
+<body>
+  <article class="article article_bluebg article_second">
+    <h2 class="white">On the map</h2>
+    <p class="white", align="center">Finding nearby points</p>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <form class="form" name="form">
+      <input type="number" min="0.0000000" max="89.999999" class="form_input" placeholder="Latitude" id="latitude_web">
+      <input type="number" min="0.0000000" max="179.999999"class="form_input" placeholder="Longitude" id="longitude_web">
+      <input type="number" min="0" max="1000" class="form_input" placeholder="Radius" id="Radius_web">
+      <button class="form_button" type="button" name="send" id="elem">Show</button>
+      <script src="{{ url_for('static', filename='js/send_post.js') }}"></script>
+    </form>
+  </article>
+</body>
+</html>

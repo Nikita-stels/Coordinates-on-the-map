@@ -60,7 +60,6 @@ class CreateDB():
             self.connect_db.conn.commit()
         return self.connect_db.cursor.statusmessage
         
-        
 
 def create_db():
     db = CreateDB()
