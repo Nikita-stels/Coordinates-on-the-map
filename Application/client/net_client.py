@@ -15,7 +15,7 @@ def get_users(latitude, longitude, radius):
 
 def add_user(latitude, longitude):
     url = r'http://127.0.0.1:8888//api/v0.1/add_user'
-    data = {'latitude': latitude, 'longitude': longitude}
+    data = {"latitude": latitude, "longitude": longitude}
     status = requests.post(url, json=data)
     return status.json()
 

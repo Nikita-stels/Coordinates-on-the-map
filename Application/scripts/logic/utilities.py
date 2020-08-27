@@ -27,11 +27,11 @@ class WrapperDB:
         self.connect_db = ConnectDB()
 
     def get_users_coordinate(self, center_lat, center_lon, radius):
-        """ 
-        Returns a sheet with coordinates 
+        """Returns a sheet with coordinates 
         included in the desired radius
         center_lat, center_lon - latitude and longitude in radians
-        radius - in kilometers
+        radius - in kilometers.
+
         """
         request = f"""
                 SELECT id, Lat, Lon
@@ -42,9 +42,7 @@ class WrapperDB:
         return self.connect_db.cursor.fetchall()
 
     def add_user(self, latitude, longitude):
-        """ 
-        Writes coordinates to the database
-        """
+        """Writes coordinates to the database."""
         request = f"INSERT INTO coordinate (Lat, Lon) VALUES({latitude}, {longitude})"
         self.connect_db.cursor.execute(request)
         self.connect_db.conn.commit()
@@ -53,9 +51,7 @@ class WrapperDB:
         return False
 
     def delete_user(self, user_id):
-        """ 
-        Removing a user by his ID
-        """
+        """Removing a user by his ID."""
         request = f"DELETE FROM coordinate WHERE Id = '{user_id}'"
         self.connect_db.cursor.execute(request)
         self.connect_db.conn.commit()
@@ -82,18 +78,18 @@ class WrapperDB:
 
 
 class Destributor:
-    """
-    Serves as a layer between the 
-    server and the database
+    """Serves as a layer between the 
+    server and the database.
+
     """
     def __init__(self, data):
         self.data = data
 
     def get_users(self):
-        """
-        Displaying the nearest neighbors to the 
+        """Displaying the nearest neighbors to the 
         given coordinates of longitude and 
-        latitude within a radius of N kilometers
+        latitude within a radius of N kilometers.
+
         """
         try:
             latitude = self.data['latitude']
@@ -106,10 +102,11 @@ class Destributor:
         return users_json
 
     def parsing_users(self, users):
-        """ Parsing data in 
-            {'status': True, 
-            'users':[lat, lon, id],[...]...}
-            if None
+        """Parsing data in 
+        {'status': True, 
+        'users':[lat, lon, id],[...]...}
+        if None.
+
         """
         try:
             new_data = dict()
@@ -123,9 +120,7 @@ class Destributor:
             new_data['status'] = True
 
     def add_user(self):
-        """
-        Allows you to add a new user
-        """
+        """Allows you to add a new user."""
         try:
             latitude = self.data['latitude']
             longitude = self.data['longitude']
@@ -137,9 +132,7 @@ class Destributor:
         return {"status": False, "info": "error, user is not logged"}
     
     def delete_user(self):
-        """
-        Allows you to delete user
-        """
+        """Allows you to delete user."""
         try:
             user_id = self.data['user_id']
         except (AttributeError, TypeError, ValueError, KeyError):
@@ -150,9 +143,7 @@ class Destributor:
         return {"status": False, "info": "error, user not deleted"}
     
     def update_user(self):
-        """
-        Allows you to update user
-        """
+        """Allows you to update user."""
         try:
             user_id = self.data['user_id']
             latitude = self.data['latitude']
