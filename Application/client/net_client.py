@@ -10,7 +10,7 @@ def get_users(latitude, longitude, radius):
     status = requests.post(url, json=data)
     return status.json()
 
-# print(get_users(latitude, longitude, radius))
+print(get_users(latitude, longitude, radius))
 
 
 def add_user(latitude, longitude):
@@ -47,12 +47,3 @@ longitude = 50.557112
 # print(update_user(user_id, latitude, longitude))
 
 
-def test_js(radius, latitude, longitude):
-    url = r'http://127.0.0.1:8888//api/v2/web_get_map/'
-    data = {'radius': radius,
-            'latitude': latitude, 
-            'longitude': longitude}
-    status = requests.post(url, json=data)
-    return status.json()
-
-print(test_js(radius, latitude, longitude))
