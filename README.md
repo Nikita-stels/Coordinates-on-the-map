@@ -76,4 +76,8 @@ radius - в километрах
 
 ## 2)
 
-Интерфейс находится в разработке
+Для просмотра веб-страницы необходимо:
+- в файле: Application\scripts\server\static\js\send_post.js заменить host и порт на свои. 
+- перейти по ссылке [Example]: http://host:port/api/v2/web_get_users/, где host и port заменить на свои.
+- 
+![main](https://github.com/Ovsienko023/Coordinates-on-the-map/blob/master/Application/client/Screen/main_web_get_users.png)
