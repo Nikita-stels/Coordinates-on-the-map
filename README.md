@@ -38,9 +38,11 @@ REST API сервис для поиска ближайших соседей на
 ### Вывод ближайших соседей к данным координатам долготы и широты в радиусе N километров:
 longitude - долгота, longitude - широта(в радианах),
 radius - в километрах
+host - ваш хост
+port - ваш порт
 
     def get_users(latitude, longitude, radius):
-        url = r'http://127.0.0.1:8888//api/v0.1/get_users'
+        url = r'http://host:port//api/v0.1/get_users'
         data = {'latitude': latitude, 'longitude': longitude, 'radius': radius}
         status = requests.post(url, json=data)
         return status.json()
@@ -49,7 +51,7 @@ radius - в километрах
 ### Добавление новой точки:
 
     def add_user(latitude, longitude):
-        url = r'http://127.0.0.1:8888//api/v0.1/add_user'
+        url = r'http://host:port//api/v0.1/add_user'
         data = {'latitude': latitude, 'longitude': longitude}
         status = requests.post(url, json=data)
         return status.json()
@@ -58,7 +60,7 @@ radius - в километрах
 Для обновления, необходимо знать уникальный id точки, и ввести новые координаты
 
     def update_user(user_id, latitude, longitude):
-        url = r'http://127.0.0.1:8888//api/v0.1/update_user'
+        url = r'http://host:port//api/v0.1/update_user'
         data = {'user_id': user_id,
                 'latitude': latitude, 
                 'longitude': longitude}
@@ -69,7 +71,7 @@ radius - в километрах
 Для удаления, необходимо знать уникальный id точки
 
     def delete_user(user_id):
-        url = r'http://127.0.0.1:8888//api/v0.1/delete_user'
+        url = r'http://host:port//api/v0.1/delete_user'
         data = {'user_id': user_id}
         status = requests.post(url, json=data)
         return status.json()
