@@ -7,23 +7,34 @@ from folium.plugins import MarkerCluster
 
 
 class Atlas:
-    def __init__(self, latitude, longitude):
+    """Processes a list of coordinates
+    and draws them on the map.
+
+    """
+    def __init__(self, latitude, longitude, radius):
         self.latitude = latitude
         self.longitude = longitude
-        self.map = folium.Map(location=[latitude,longitude], zoom_start = 12)
+        self.zoom_start = self.zoom_handler(radius)
+        self.map = folium.Map(location=[latitude,longitude], zoom_start = 11)
         self.marker_cluster = MarkerCluster().add_to(self.map)
         print(self.marker_cluster)
     
     def generation_map(self, coordinates):
+        """Draws coordinates on the map."""
         for point in coordinates['users']:
             lat, lon, info_id = point
             print(point)
-
-            # folium.Marker(location=coordinates, icon=folium.Icon(color = 'green')).add_to(map)
             folium.Marker(location=[lat,lon], popup=info_id, icon=folium.Icon(color = 'gray')).add_to(self.marker_cluster)
-        # self.map.save("map1.html")
         return self.map
 
+    def zoom_handler(self, radius):
+        """Calculates a suitable zoom."""
+        if radius > 40:
+            return 10
+        if 20 < radius < 40:
+            return 11
+        return 12
+        
 
 class ConnectDB():
     """Class for connect to DB."""
@@ -102,7 +113,30 @@ class Destributor:
 
     """
     def __init__(self, data):
-        self.data = data
+        self.data = self.handler_data(data)
+
+    def handler_data(self, data):
+        latitude = data.get('latitude')
+        longitude = data.get('longitude')
+        radius = data.get('radius')
+        data['flag'] = True
+        try:
+            if latitude:
+                latitude = float(latitude)
+                if latitude < 0 or latitude > 90:
+                    data['flag'] = False
+            if longitude:
+                longitude = float(longitude)
+                if longitude < 0 or longitude > 180:
+                    data['flag'] = False
+            if radius:
+                radius = int(radius)
+                if radius > 100:
+                    data['flag'] = False
+        except ValueError:
+            data['flag'] = False
+        finally:
+            return data
 
     def get_users(self):
         """Displaying the nearest neighbors to the 
@@ -110,15 +144,17 @@ class Destributor:
         latitude within a radius of N kilometers.
 
         """
-        try:
-            latitude = self.data['latitude']
-            longitude = self.data['longitude'] 
-            radius = self.data['radius']
-        except (AttributeError, TypeError, ValueError, KeyError):
-            return {"status": False, "info": "invalid json"}
-        coordinate_users = WrapperDB().get_users_coordinate(latitude, longitude, radius)
-        users_json = self.parsing_users(coordinate_users)
-        return users_json
+        if self.data['flag']:
+            try:
+                latitude = self.data['latitude']
+                longitude = self.data['longitude'] 
+                radius = self.data['radius']
+            except (AttributeError, TypeError, ValueError, KeyError):
+                return {"status": False, "info": "invalid json"}
+            coordinate_users = WrapperDB().get_users_coordinate(latitude, longitude, radius)
+            users_json = self.parsing_users(coordinate_users)
+            return users_json
+        return {"status": False, "info": "invalid json data"}
 
     def parsing_users(self, users):
         """Parsing data in 
@@ -140,15 +176,17 @@ class Destributor:
 
     def add_user(self):
         """Allows you to add a new user."""
-        try:
-            latitude = self.data['latitude']
-            longitude = self.data['longitude']
-        except (AttributeError, TypeError, ValueError, KeyError):
-            return {"status": False, "info": "invalid json"}
-        status = WrapperDB().add_user(latitude, longitude)
-        if status:
-            return {"status": True, "info": "user added successfully"}
-        return {"status": False, "info": "error, user is not logged"}
+        if self.data['flag']:
+            try:
+                latitude = self.data['latitude']
+                longitude = self.data['longitude']
+            except (AttributeError, TypeError, ValueError, KeyError):
+                return {"status": False, "info": "invalid json"}
+            status = WrapperDB().add_user(latitude, longitude)
+            if status:
+                return {"status": True, "info": "user added successfully"}
+            return {"status": False, "info": "error, user is not logged"}
+        return {"status": False, "info": "invalid json data"}
     
     def delete_user(self):
         """Allows you to delete user."""
@@ -163,27 +201,33 @@ class Destributor:
     
     def update_user(self):
         """Allows you to update user."""
-        try:
-            user_id = self.data['user_id']
-            latitude = self.data['latitude']
-            longitude = self.data['longitude']
-        except (AttributeError, TypeError, ValueError, KeyError):
-            return {"status": False, "info": "invalid json"}
-        status = WrapperDB().update_user(latitude, longitude, user_id)
-        if status:
-            return {"status": True, "info": "data changed successfully"}
-        return {"status": False, "info": "error, data not changed"}
+        if self.data['flag']:
+            try:
+                user_id = self.data['user_id']
+                latitude = self.data['latitude']
+                longitude = self.data['longitude']
+            except (AttributeError, TypeError, ValueError, KeyError):
+                return {"status": False, "info": "invalid json"}
+            status = WrapperDB().update_user(latitude, longitude, user_id)
+            if status:
+                return {"status": True, "info": "data changed successfully"}
+            return {"status": False, "info": "error, data not changed"}
+        return {"status": False, "info": "invalid json data"}
 
     def web_get_map(self):
-        """ """
-        try:
-            radius = float(self.data['radius'])
-            latitude = float(self.data['latitude'])
-            longitude = float(self.data['longitude'])
-        except (AttributeError, TypeError, ValueError, KeyError):
-            return {"status": False, "info": "invalid json"}
-        coordinate_users = WrapperDB().get_users_coordinate(latitude, longitude, radius)
-        users_json = self.parsing_users(coordinate_users)
-        maps = Atlas(latitude, longitude).generation_map(users_json)
-        return maps
-
+        """Returns html if correct data."""
+        if self.data['flag']:
+            try:
+                radius = int(self.data['radius'])
+                latitude = float(self.data['latitude'])
+                longitude = float(self.data['longitude'])
+            except (AttributeError, TypeError, ValueError, KeyError):
+                return {"status": False, "info": "invalid json"}
+            print(radius, latitude, longitude)
+            coordinate_users = WrapperDB().get_users_coordinate(latitude, longitude, radius)
+            if not coordinate_users:
+                return {"status": "not_point", "info": "invalid json data"}
+            users_json = self.parsing_users(coordinate_users)
+            maps = Atlas(latitude, longitude, radius).generation_map(users_json)
+            return maps
+        return {"status": False, "info": "invalid json data"}

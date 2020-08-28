@@ -39,6 +39,7 @@ def update_user():
   print(status)
   return status
 
+
 @app.route('/api/v2/web_get_users/', methods=['GET', 'POST'])
 def web_get_users():
   print(request.json)
@@ -49,4 +50,7 @@ def web_get_users():
 def web_get_map():
   data = request.json
   status = Destributor(data).web_get_map()
+  print(status)
+  if isinstance(status, dict):
+    return status
   return status._repr_html_()

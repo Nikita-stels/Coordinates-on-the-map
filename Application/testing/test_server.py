@@ -72,4 +72,3 @@ def test_server_run():
     unittest.main()
 
 test_server_run()
-# СДЕЛАТЬ добовление прогона теста в MAKE

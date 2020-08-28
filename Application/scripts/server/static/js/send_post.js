@@ -20,7 +20,17 @@ elem.onclick = function() {
             console.log(request)
             document.write(request.responseText);
             // РАЗОБРАТЬСЯ СО СТАТУС КОДОМ И ВЫВОДОМ HTML
+            obj = JSON.parse(request.response);
+
+            obj_status = obj.status
+            if (obj_status == false){
+                alert('You entered incorrect coordinates, please try again.\nlatitude (0 to 90)\nlongitude (0 to 180)\nradius (up to 100)\n\nClick "OK" to continue')
+                window.location.reload(); 
+            }
+            if (obj_status == "not_point")
+                alert('There are no points in this radius!\nClick "OK" to continue')
+                window.location.reload(); 
     }
-   
+
 }
   };
