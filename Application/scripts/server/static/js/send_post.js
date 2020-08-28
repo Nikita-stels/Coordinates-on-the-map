@@ -11,7 +11,7 @@ elem.onclick = function() {
     console.log(data)
     var json = JSON.stringify(data);
     var request = new XMLHttpRequest();
-    request.open("POST", "http://127.0.0.1:8888/api/v2/web_get_map");
+    request.open("POST", "http://68.183.217.251:8888/api/v2/web_get_map");
     request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     request.send(json);
     request.onload = () => console.log(request.response)
