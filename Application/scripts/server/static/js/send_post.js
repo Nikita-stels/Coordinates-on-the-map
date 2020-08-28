@@ -19,7 +19,6 @@ elem.onclick = function() {
         if (request.status == "200") {
             console.log(request)
             document.write(request.responseText);
-            // РАЗОБРАТЬСЯ СО СТАТУС КОДОМ И ВЫВОДОМ HTML
             obj = JSON.parse(request.response);
 
             obj_status = obj.status

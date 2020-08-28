@@ -17,13 +17,11 @@ class Atlas:
         self.zoom_start = self.zoom_handler(radius)
         self.map = folium.Map(location=[latitude,longitude], zoom_start = 11)
         self.marker_cluster = MarkerCluster().add_to(self.map)
-        print(self.marker_cluster)
     
     def generation_map(self, coordinates):
         """Draws coordinates on the map."""
         for point in coordinates['users']:
             lat, lon, info_id = point
-            print(point)
             folium.Marker(location=[lat,lon], popup=info_id, icon=folium.Icon(color = 'gray')).add_to(self.marker_cluster)
         return self.map
 
@@ -223,7 +221,6 @@ class Destributor:
                 longitude = float(self.data['longitude'])
             except (AttributeError, TypeError, ValueError, KeyError):
                 return {"status": False, "info": "invalid json"}
-            print(radius, latitude, longitude)
             coordinate_users = WrapperDB().get_users_coordinate(latitude, longitude, radius)
             if not coordinate_users:
                 return {"status": "not_point", "info": "invalid json data"}
